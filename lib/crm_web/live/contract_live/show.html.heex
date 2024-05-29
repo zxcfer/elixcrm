@@ -1,0 +1,35 @@
+<.header>
+  Contract <%= @contract.id %>
+  <:subtitle>This is a contract record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/contracts/#{@contract}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit contract</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Do"><%= @contract.do %></:item>
+  <:item title="Po"><%= @contract.po %></:item>
+  <:item title="Itq"><%= @contract.itq %></:item>
+  <:item title="Startdate"><%= @contract.startdate %></:item>
+  <:item title="Enddate"><%= @contract.enddate %></:item>
+  <:item title="Type"><%= @contract.type %></:item>
+  <:item title="Svcalloperdevice"><%= @contract.svcalloperdevice %></:item>
+  <:item title="Timeallo"><%= @contract.timeallo %></:item>
+  <:item title="Value"><%= @contract.value %></:item>
+  <:item title="Active"><%= @contract.active %></:item>
+</.list>
+
+<.back navigate={~p"/contracts"}>Back to contracts</.back>
+
+<.modal :if={@live_action == :edit} id="contract-modal" show on_cancel={JS.patch(~p"/contracts/#{@contract}")}>
+  <.live_component
+    module={CrmWeb.ContractLive.FormComponent}
+    id={@contract.id}
+    title={@page_title}
+    action={@live_action}
+    contract={@contract}
+    patch={~p"/contracts/#{@contract}"}
+  />
+</.modal>

@@ -1,0 +1,46 @@
+<.header>
+  Listing Companies
+  <:actions>
+    <.link patch={~p"/companies/new"}>
+      <.button>New Company</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="companies"
+  rows={@streams.companies}
+  row_click={fn {_id, company} -> JS.navigate(~p"/companies/#{company}") end}
+>
+  <:col :let={{_id, company}} label="Name"><%= company.name %></:col>
+  <:col :let={{_id, company}} label="Billingadd1"><%= company.billingadd1 %></:col>
+  <:col :let={{_id, company}} label="Billingadd2"><%= company.billingadd2 %></:col>
+  <:col :let={{_id, company}} label="Postalcode"><%= company.postalcode %></:col>
+  <%!-- <:col :let={{_id, company}} label="Country"><%= company.country.name %></:col> --%>
+  <:action :let={{_id, company}}>
+    <div class="sr-only">
+      <.link navigate={~p"/companies/#{company}"}>Show</.link>
+    </div>
+    <.link patch={~p"/companies/#{company}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, company}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: company.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="company-modal" show on_cancel={JS.patch(~p"/companies")}>
+  <.live_component
+    module={CrmWeb.CompanyLive.FormComponent}
+    id={@company.id || :new}
+    title={@page_title}
+    action={@live_action}
+    company={@company}
+    countries={@countries}
+    patch={~p"/companies"}
+  />
+</.modal>
