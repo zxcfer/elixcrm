@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :crm, Crm.Repo,
-  username: "adrianlim",
-  password: "",
+  username: "postgres",
+  password: "postgres",
   hostname: "localhost",
-  database: "crm_dev",
+  database: "crm",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
